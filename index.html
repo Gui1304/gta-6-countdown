@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Contagem Regressiva GTA 6</title>
+  <style>
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'Segoe UI', sans-serif; }
+
+    /* FUNDO E OVERLAY */
+    body {
+      background: #000 url('gta 6.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; /* centraliza verticalmente */
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* TÍTULO SUAVE */
+    h1 {
+      font-size: 3rem;
+      color: #db9bb1;
+      text-shadow: 0 0 8px #db9bb1;
+      margin-bottom: 2rem;
+    }
+
+    /* CONTAGEM EM LINHA */
+    .countdown {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: nowrap;
+      margin-bottom: 2rem; /* espaçamento abaixo */
+    }
+
+    /* BLOCOS ROSA-NEON SUAVE */
+    .box {
+      background: rgba(219,155,177,0.3);
+      border: 1px solid #db9bb1;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      min-width: 80px;
+      transition: transform .2s, background .2s;
+    }
+    .box:hover {
+      transform: translateY(-4px);
+      background: rgba(219,155,177,0.5);
+    }
+    .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+    .label {
+      margin-top: .3rem;
+      font-size: .9rem;
+      color: #ccc;
+    }
+
+    /* LOGOS */
+    .logos {
+      margin-bottom: 2rem; /* espaçamento antes dos trailers */
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .logos img {
+      width: 60px;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+    }
+    .logos img:hover {
+      opacity: .8;
+      transform: scale(1.1);
+    }
+
+    /* TRAILERS - NA PARTE INFERIOR */
+    .trailers {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .tab {
+      background: rgba(219,155,177,0.3);
+      border: 1px solid #db9bb1;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background .3s, transform .3s;
+    }
+    .tab:hover {
+      background: rgba(219,155,177,0.5);
+      transform: translateY(-3px);
+    }
+    .tab span {
+      margin-left: 0.5rem;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+    .arrow {
+      display: inline-block;
+      margin-left: 0.5rem;
+      transition: transform .3s;
+    }
+    .tab.active .arrow {
+      transform: rotate(180deg);
+    }
+
+    .video-container {
+      margin-top: 1rem;
+      width: 100%;
+      display: none;
+      justify-content: center;
+    }
+    .video-container.active {
+      display: flex;
+    }
+    .video-container iframe {
+      width: 100%;
+      max-width: 760px;
+      height: 430px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    /* RESPONSIVO */
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .box { padding: .8rem 1rem; min-width: 60px; }
+      .number { font-size: 2rem; }
+      .label { font-size: .8rem; }
+      .logos img { width: 50px; }
+      .trailers { flex-direction: column; }
+      .tab { justify-content: center; }
+      .video-container iframe { height: 250px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>GTA 6 chega em:</h1>
+    <div class="countdown">
+      <div class="box"><div class="number" id="dias">0</div><div class="label">Dias</div></div>
+      <div class="box"><div class="number" id="horas">00</div><div class="label">Horas</div></div>
+      <div class="box"><div class="number" id="minutos">00</div><div class="label">Min</div></div>
+      <div class="box"><div class="number" id="segundos">00</div><div class="label">Seg</div></div>
+    </div>
+
+    <div class="logos">
+      <a href="https://store.playstation.com/en-us/concept/10000730" target="_blank">
+        <img src="ps-logo.png" alt="PlayStation Store">
+      </a>
+      <a href="https://www.xbox.com/en-US" target="_blank">
+        <img src="xbox-logo.png" alt="Xbox Official">
+      </a>
+    </div>
+
+    <div class="trailers">
+      <div class="tab" data-video="video1">
+        Veja o 1º trailer <div class="arrow">&#9660;</div>
+      </div>
+      <div class="tab" data-video="video2">
+        Veja o 2º trailer <div class="arrow">&#9660;</div>
+      </div>
+    </div>
+
+    <div id="video1" class="video-container">
+      <iframe src="https://www.youtube.com/embed/QdBZY2fkU-0?rel=0" allowfullscreen></iframe>
+    </div>
+    <div id="video2" class="video-container">
+      <iframe src="https://www.youtube.com/embed/VQRLujxTm3c?rel=0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Contagem regressiva
+    const dataLancamento = new Date('2026-05-26T00:00:00');
+    function atualizarContagem() {
+      const agora = new Date();
+      const diff = dataLancamento - agora;
+      if (diff <= 0) { clearInterval(timer); return; }
+      const dias  = Math.floor(diff / (1000*60*60*24));
+      const horas = Math.floor((diff / (1000*60*60)) % 24);
+      const mins  = Math.floor((diff / (1000*60)) % 60);
+      const secs  = Math.floor((diff / 1000) % 60);
+      document.getElementById('dias').textContent    = dias;
+      document.getElementById('horas').textContent   = String(horas).padStart(2,'0');
+      document.getElementById('minutos').textContent = String(mins).padStart(2,'0');
+      document.getElementById('segundos').textContent= String(secs).padStart(2,'0');
+    }
+    const timer = setInterval(atualizarContagem, 1000);
+    atualizarContagem();
+
+    // Tabs de trailer com toggle
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const vidId = tab.getAttribute('data-video');
+        const container = document.getElementById(vidId);
+        const isActive = container.classList.contains('active');
+        // fecha todas
+        document.querySelectorAll('.video-container').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // toggle
+        if (!isActive) {
+          container.classList.add('active');
+          tab.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
