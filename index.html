@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Contagem Regressiva GTA 6</title>
-  <!-- Google Fonts para a fonte igual da imagem (Orbitron, alternativa moderna e geométrica) -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <!-- Fonte Orbitron para o texto "chega em" -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: 'Segoe UI', sans-serif; }
@@ -64,32 +64,29 @@
       justify-content: center;
     }
 
-    /* LOGO */
+    /* LOGO OFICIAL - mais para baixo */
     .logo-oficial {
       width: 340px;
       max-width: 90vw;
-      margin-bottom: 1.2rem;
+      margin-bottom: 2.5rem;
       animation: fadeInDown 1s cubic-bezier(.77,0,.18,1) both;
     }
 
-    /* "CHEGA EM" ESTILO DA IMAGEM */
+    /* "CHEGA EM" menor e sem fundo */
     .coming-text {
       font-family: 'Orbitron', 'Arial', sans-serif;
-      font-size: 2.2rem;
+      font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: 0.26em;
       color: #fff;
-      background: #000;
-      padding: 0.3em 1.5em;
-      border-radius: 0.2em;
+      padding: 0;
+      border-radius: 0;
       display: inline-block;
       margin-bottom: 2rem;
-      /* contorno neon rosa claro igual ao da imagem */
       text-shadow:
-        0 0 3px #ffb3ff,
-        0 0 6px #ffb3ff,
-        0 0 10px #fff;
-      border: none;
+        0 0 6px #ff6fcf,
+        0 0 12px #ff6fcf,
+        0 0 2px #ff6fcf;
       animation: fadeInDown 1.2s 0.2s cubic-bezier(.77,0,.18,1) both;
     }
 
@@ -247,6 +244,11 @@
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
       user-select: none;
     }
+    .retro-button:hover {
+      background: rgba(26,10,21,0.8);
+      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
+      transform: translateY(-3px) scale(1.03);
+    }
     .retro-button.playing {
       background: #260e22;
       color: #f47eb7;
@@ -294,8 +296,8 @@
     }
 
     @media (max-width: 480px) {
-      .logo-oficial { width: 90vw; }
-      .coming-text { font-size: 1.1rem; padding: 0.3em 0.5em;}
+      .logo-oficial { width: 90vw; margin-bottom: 2rem; }
+      .coming-text { font-size: 1.2rem; margin-bottom: 1.5rem; }
       .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
       .label { font-size: 0.8rem; }
@@ -322,10 +324,10 @@
 
   <div class="overlay"></div>
   <div class="container">
-    <!-- COLOQUE AQUI SUA LOGO OFICIAL -->
+    <!-- Logo oficial (substitua o src pela sua logo) -->
     <img src="sua-logo-gta6.png" alt="Logo GTA 6" class="logo-oficial" />
 
-    <!-- TEXTO "CHEGA EM" NO ESTILO DA IMAGEM -->
+    <!-- Texto "chega em" menor e sem fundo -->
     <div class="coming-text">CHEGA EM</div>
 
     <div class="countdown fade-in">
