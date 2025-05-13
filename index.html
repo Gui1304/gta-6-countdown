@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Contagem Regressiva GTA 6</title>
-  <!-- Fonte Orbitron para o texto "chega em" -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,20 +16,17 @@
       background: #000;
     }
 
-    /* SLIDESHOW LATERAL INFINITO */
     .background-slideshow {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       overflow: hidden;
       z-index: 0;
     }
     .slideshow-track {
       display: flex;
       height: 100%;
-      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 1.2s cubic-bezier(0.4,0,0.2,1);
       will-change: transform;
     }
     .slide {
@@ -42,10 +38,8 @@
     }
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: linear-gradient(45deg, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.3));
       z-index: 1;
       pointer-events: none;
@@ -64,15 +58,16 @@
       justify-content: center;
     }
 
-    /* LOGO OFICIAL - mais para baixo */
+    /* Logo oficial com margem-top maior para alinhar com a linha da sua imagem */
     .logo-oficial {
       width: 340px;
       max-width: 90vw;
+      margin-top: 220px; /* ajuste conforme necessário para alinhar com a linha vermelha */
       margin-bottom: 2.5rem;
       animation: fadeInDown 1s cubic-bezier(.77,0,.18,1) both;
+      display: block;
     }
 
-    /* "CHEGA EM" menor e sem fundo */
     .coming-text {
       font-family: 'Orbitron', 'Arial', sans-serif;
       font-size: 1.6rem;
@@ -88,9 +83,10 @@
         0 0 12px #ff6fcf,
         0 0 2px #ff6fcf;
       animation: fadeInDown 1.2s 0.2s cubic-bezier(.77,0,.18,1) both;
+      text-align: center;
+      user-select: none;
     }
 
-    /* CONTADOR E BOTÕES ESTILO NEON */
     .countdown {
       display: flex;
       gap: 1rem;
@@ -254,7 +250,6 @@
       color: #f47eb7;
     }
 
-    /* NOTIFICAÇÃO */
     .notify-button {
       margin: 1.5rem 0 0 0;
       padding: 0.8rem 1.6rem;
@@ -285,7 +280,6 @@
       align-items: center;
     }
 
-    /* ANIMAÇÕES */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-40px);}
       to   { opacity: 1; transform: none;}
@@ -296,7 +290,7 @@
     }
 
     @media (max-width: 480px) {
-      .logo-oficial { width: 90vw; margin-bottom: 2rem; }
+      .logo-oficial { width: 90vw; margin-top: 80px; margin-bottom: 2rem; }
       .coming-text { font-size: 1.2rem; margin-bottom: 1.5rem; }
       .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
@@ -324,10 +318,7 @@
 
   <div class="overlay"></div>
   <div class="container">
-    <!-- Logo oficial (substitua o src pela sua logo) -->
     <img src="sua-logo-gta6.png" alt="Logo GTA 6" class="logo-oficial" />
-
-    <!-- Texto "chega em" menor e sem fundo -->
     <div class="coming-text">CHEGA EM</div>
 
     <div class="countdown fade-in">
@@ -362,7 +353,6 @@
       <iframe src="https://www.youtube.com/embed/VQRLujxTm3c?rel=0" allowfullscreen></iframe>
     </div>
 
-    <!-- BOTÃO DE NOTIFICAÇÃO -->
     <button class="notify-button" id="notify-btn" onclick="subscribeNotification()">
       <span class="notify-icon">🔔</span>
       Ativar notificação de lançamento
@@ -378,7 +368,6 @@
   </div>
 
   <script>
-    // Slideshow lateral infinito com loop fluido e transição a cada 5 segundos
     const track = document.querySelector('.slideshow-track');
     const slides = Array.from(document.querySelectorAll('.slide'));
     const slideCount = slides.length;
@@ -386,7 +375,6 @@
     let isTransitioning = false;
     let interval;
 
-    // Clone do primeiro slide para loop fluido
     const firstClone = slides[0].cloneNode(true);
     track.appendChild(firstClone);
 
@@ -421,7 +409,7 @@
     }
 
     function startSlideshow() {
-      interval = setInterval(nextSlide, 5000);
+      interval = setInterval(nextSlide, 8000); // 8 segundos entre imagens
     }
     function stopSlideshow() {
       clearInterval(interval);
@@ -431,12 +419,11 @@
     setTimeout(() => {
       nextSlide();
       startSlideshow();
-    }, 5000);
+    }, 8000); // espera 8 segundos antes da primeira transição
 
     track.addEventListener('mouseenter', stopSlideshow);
     track.addEventListener('mouseleave', startSlideshow);
 
-    // Contagem Regressiva
     const dataLancamento = new Date('2026-05-26T00:00:00');
     function atualizarContagem() {
       const agora = new Date();
@@ -444,7 +431,6 @@
       if (diff <= 0) {
         clearInterval(timer);
         document.querySelector('.countdown').innerHTML = '<h2>LANÇADO!</h2>';
-        // Notificação automática ao lançar
         if (window.Notification && Notification.permission === "granted") {
           new Notification("GTA 6 já foi lançado!");
         }
@@ -462,7 +448,6 @@
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
 
-    // Toggle para abrir/fechar trailers
     function toggleVideo(videoId, tab) {
       const videoContainer = document.getElementById(videoId);
       const isActive = videoContainer.classList.contains('active');
@@ -474,19 +459,16 @@
       }
     }
 
-    // Controle de Áudio
     const musicPlayer = document.getElementById('background-music');
     const musicButton = document.getElementById('music-toggle');
     const musicStatus = document.querySelector('.music-status');
 
-    // Tocar música automaticamente ao entrar (se permitido pelo navegador)
     function tryAutoplayMusic() {
       musicPlayer.volume = 0.6;
       musicPlayer.play().then(() => {
         musicStatus.textContent = 'Mute';
         musicButton.classList.add('playing');
       }).catch(() => {
-        // Autoplay bloqueado, aguardar interação do usuário
         musicStatus.textContent = 'Play';
         musicButton.classList.remove('playing');
       });
@@ -505,7 +487,6 @@
       }
     });
 
-    // NOTIFICAÇÃO DE LANÇAMENTO
     function subscribeNotification() {
       if (!("Notification" in window)) {
         alert("Seu navegador não suporta notificações.");
