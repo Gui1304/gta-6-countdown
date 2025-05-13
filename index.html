@@ -1,102 +1,127 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Contagem Regressiva GTA 6</title>
   <style>
-    /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: 'Segoe UI', sans-serif; }
 
-    /* FUNDO E OVERLAY */
     body {
-      background: #000;
+      min-height: 100vh;
+      min-width: 100vw;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* SLIDESHOW LATERAL INFINITO */
+    .background-slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .slideshow-track {
+      display: flex;
+      height: 100vh;
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .slide {
+      flex: 0 0 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(45deg, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.3));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* CENTRALIZAÇÃO GERAL */
+    .container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 100%;
+      max-width: 800px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      text-align: center;
-      position: relative;
-    }
-    
-    /* SLIDESHOW DE FUNDO */
-    .background-slideshow {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-    }
-    .slide {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
-      z-index: 0;
-    }
-    .slide.active {
-      opacity: 1;
-    }
-    
-    .overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 1;
     }
 
-    .container {
-      position: relative;
-      z-index: 2;
-      padding: 2rem;
-      width: 100%;
-      max-width: 800px;
-    }
-
-    /* TÍTULO SUAVE */
+    /* TÍTULO ROSA NEON SUAVE COM CONTORNO PRETO MAIS FORTE E GROSSO */
     h1 {
       font-size: 3rem;
-      color: #db9bb1;
-      text-shadow: 0 0 8px #db9bb1;
+      color: #f47eb7;
+      text-shadow:
+        0 0 14px #f47eb7,
+        0 0 4px #000,
+        4px 4px 0 #000,
+        -4px -4px 0 #000,
+        4px -4px 0 #000,
+        -4px 4px 0 #000;
       margin-bottom: 2rem;
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: 900;
     }
 
-    /* CONTAGEM EM LINHA */
+    /* CONTADOR E BOTÕES ESTILO NEON COM FUNDO PRETO TRANSLÚCIDO */
     .countdown {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      flex-wrap: nowrap;
+      align-items: center;
       margin-bottom: 2rem;
     }
-
-    /* BLOCOS ROSA-NEON SUAVE */
+    .box,
+    .tab,
+    .retro-button {
+      background: rgba(16,16,16,0.6); /* preto translúcido */
+      border: 2px solid #f47eb7;
+      border-radius: 10px;
+      box-shadow:
+        0 0 10px #f47eb7,
+        0 0 2px #000;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      user-select: none;
+    }
     .box {
-      background: rgba(219,155,177,0.3);
-      border: 1px solid #db9bb1;
-      border-radius: 8px;
       padding: 1rem 1.5rem;
       min-width: 80px;
-      transition: transform 0.2s, background 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .box:hover {
-      transform: translateY(-4px);
-      background: rgba(219,155,177,0.5);
+    .box:hover,
+    .tab:hover,
+    .retro-button:hover {
+      background: rgba(26,10,21,0.8);
+      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
+      transform: translateY(-3px) scale(1.03);
     }
     .number {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #f0f0f0;
+      color: #fff;
+      text-shadow: 0 0 8px #f47eb7;
     }
     .label {
       margin-top: 0.3rem;
       font-size: 0.9rem;
-      color: #ccc;
+      color: #f47eb7;
+      text-shadow: 0 0 4px #000;
     }
 
     /* LOGOS */
@@ -105,6 +130,7 @@
       display: flex;
       gap: 2rem;
       justify-content: center;
+      align-items: center;
     }
     .logos img {
       width: 60px;
@@ -120,21 +146,31 @@
     .trailers {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 2rem;
+      margin-bottom: 2rem;
     }
     .tab {
-      background: rgba(219,155,177,0.3);
-      border: 1px solid #db9bb1;
-      border-radius: 8px;
       padding: 0.8rem 1.2rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      transition: background 0.3s, transform 0.3s;
+      font-weight: 600;
+      color: #fff;
+      font-size: 1rem;
+      background: rgba(16,16,16,0.6);
+      border: 2px solid #f47eb7;
+      border-radius: 10px;
+      box-shadow:
+        0 0 10px #f47eb7,
+        0 0 2px #000;
+      user-select: none;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
     }
     .tab:hover {
-      background: rgba(219,155,177,0.5);
-      transform: translateY(-3px);
+      background: rgba(26,10,21,0.8);
+      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
+      transform: translateY(-3px) scale(1.03);
     }
     .tab span {
       margin-left: 0.5rem;
@@ -155,6 +191,7 @@
       width: 100%;
       display: none;
       justify-content: center;
+      align-items: center;
     }
     .video-container.active {
       display: flex;
@@ -168,111 +205,71 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    /* CONTROLE DE ÁUDIO RETRÔ */
+    /* BOTÃO DE ÁUDIO RETRÔ */
     .audio-control {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .retro-button {
       font-weight: 600;
       padding: 12px 20px;
-      outline: none;
-      border: 1px solid #db9bb1;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 5px;
-      color: #db9bb1;
+      color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
       position: relative;
-      transition: all 0.3s ease;
+      background: rgba(16,16,16,0.6);
+      border: 2px solid #f47eb7;
+      border-radius: 10px;
+      box-shadow:
+        0 0 10px #f47eb7,
+        0 0 2px #000;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      user-select: none;
     }
-    .retro-button:after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      top: 5px;
-      left: 5px;
-      height: 100%;
-      background-color: rgba(219, 155, 177, 0.3);
-      z-index: -1;
-      transition: all 0.35s;
-      border-radius: inherit;
-    }
-    .retro-button:hover:after {
-      top: 0px;
-      left: 0px;
-    }
-    .icon-music {
-      font-size: 1.2rem;
-      display: inline-block;
+    .retro-button:hover {
+      background: rgba(26,10,21,0.8);
+      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
+      transform: translateY(-3px) scale(1.03);
     }
     .retro-button.playing {
-      box-shadow: 0 0 10px rgba(219, 155, 177, 0.7);
+      background: #260e22;
+      color: #f47eb7;
     }
 
-    /* ANIMAÇÕES */
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 0.8s ease-in forwards;
-    }
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    .slide-in {
-      transform: translateY(20px);
-      opacity: 0;
-      animation: slideIn 0.5s ease-out forwards;
-    }
-    @keyframes slideIn {
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    /* DELAYS PARA SEQUÊNCIA MAIS RÁPIDA */
-    .container > h1 {
-      animation-delay: 0.1s;
-    }
-    .container > .countdown {
-      animation-delay: 0.3s;
-    }
-    .container > .logos {
-      animation-delay: 0.5s;
-    }
-    .container > .trailers {
-      animation-delay: 0.7s;
-    }
-
-    /* RESPONSIVO */
     @media (max-width: 480px) {
       h1 { font-size: 2rem; }
       .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
       .label { font-size: 0.8rem; }
       .logos img { width: 50px; }
-      .trailers { flex-direction: column; }
+      .trailers { flex-direction: column; gap: 1rem; }
       .tab { justify-content: center; }
       .video-container iframe { height: 250px; }
       .audio-control { bottom: 10px; right: 10px; }
-      .retro-button { padding: 8px 12px; }
+      .retro-button { padding: 8px 12px; font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
+  <!-- Slideshow com quantas imagens quiser -->
   <div class="background-slideshow">
-    <div class="slide active" style="background-image: url('gta 6.png');"></div>
-    <div class="slide" style="background-image: url('gta6-2.png');"></div>
-    <div class="slide" style="background-image: url('gta6-3.png');"></div>
+    <div class="slideshow-track">
+      <div class="slide" style="background-image: url('gta 6.png')"></div>
+      <div class="slide" style="background-image: url('gta6-2.png')"></div>
+      <div class="slide" style="background-image: url('gta6-3.png')"></div>
+      <div class="slide" style="background-image: url('gta6-4.png')"></div>
+      <div class="slide" style="background-image: url('gta6-5.png')"></div>
+      <div class="slide" style="background-image: url('gta6-6.png')"></div>
+    </div>
   </div>
+
   <div class="overlay"></div>
   <div class="container">
     <h1 class="fade-in">GTA 6 chega em:</h1>
@@ -285,18 +282,18 @@
 
     <div class="logos fade-in">
       <a href="https://store.playstation.com/en-us/concept/10000730" target="_blank">
-        <img src="ps-logo.png" alt="PlayStation Store">
+        <img src="ps-logo.png" alt="PlayStation" />
       </a>
       <a href="https://www.xbox.com/en-US" target="_blank">
-        <img src="xbox-logo.png" alt="Xbox Official">
+        <img src="xbox-logo.png" alt="Xbox" />
       </a>
     </div>
 
     <div class="trailers fade-in">
-      <div class="tab" data-video="video1">
+      <div class="tab" data-video="video1" onclick="toggleVideo('video1', this)">
         Veja o 1º trailer <div class="arrow">▼</div>
       </div>
-      <div class="tab" data-video="video2">
+      <div class="tab" data-video="video2" onclick="toggleVideo('video2', this)">
         Veja o 2º trailer <div class="arrow">▼</div>
       </div>
     </div>
@@ -312,18 +309,80 @@
   <div class="audio-control">
     <audio id="background-music" src="Hot Together.mp3" loop></audio>
     <button id="music-toggle" class="retro-button">
-      <span class="icon-music">♫</span>
+      <span>♫</span>
       <span class="music-status">Play</span>
     </button>
   </div>
 
   <script>
-    // Contagem regressiva
+    // Slideshow lateral infinito com loop fluido e transição a cada 5 segundos
+    const track = document.querySelector('.slideshow-track');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const slideCount = slides.length;
+    let currentSlide = 0;
+    let isTransitioning = false;
+    let interval;
+
+    // Clone do primeiro slide para loop fluido
+    const firstClone = slides[0].cloneNode(true);
+    track.appendChild(firstClone);
+
+    function goToSlide(index, animate = true) {
+      if (animate) {
+        track.style.transition = "transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)";
+      } else {
+        track.style.transition = "none";
+      }
+      track.style.transform = `translateX(${-index * 100}vw)`;
+    }
+
+    function nextSlide() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentSlide++;
+      goToSlide(currentSlide, true);
+
+      if (currentSlide === slideCount) {
+        setTimeout(() => {
+          track.style.transition = "none";
+          currentSlide = 0;
+          goToSlide(currentSlide, false);
+          void track.offsetWidth;
+          isTransitioning = false;
+        }, 1200);
+      } else {
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 1200);
+      }
+    }
+
+    function startSlideshow() {
+      interval = setInterval(nextSlide, 5000);
+    }
+    function stopSlideshow() {
+      clearInterval(interval);
+    }
+
+    goToSlide(0, false);
+    setTimeout(() => {
+      nextSlide();
+      startSlideshow();
+    }, 5000);
+
+    track.addEventListener('mouseenter', stopSlideshow);
+    track.addEventListener('mouseleave', startSlideshow);
+
+    // Contagem Regressiva
     const dataLancamento = new Date('2026-05-26T00:00:00');
     function atualizarContagem() {
       const agora = new Date();
       const diff = dataLancamento - agora;
-      if (diff <= 0) { clearInterval(timer); return; }
+      if (diff <= 0) {
+        clearInterval(timer);
+        document.querySelector('.countdown').innerHTML = '<h2>LANÇADO!</h2>';
+        return;
+      }
       const dias = Math.floor(diff / (1000*60*60*24));
       const horas = Math.floor((diff / (1000*60*60)) % 24);
       const mins = Math.floor((diff / (1000*60)) % 60);
@@ -336,60 +395,38 @@
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
 
-    // Tabs de trailer com toggle e animação
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const vidId = tab.getAttribute('data-video');
-        const container = document.getElementById(vidId);
-        const isActive = container.classList.contains('active');
-        // Fecha todas
-        document.querySelectorAll('.video-container').forEach(v => {
-          v.classList.remove('active');
-          v.classList.remove('slide-in');
-        });
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        // Toggle
-        if (!isActive) {
-          container.classList.add('active');
-          container.classList.add('slide-in');
-          tab.classList.add('active');
-        }
-      });
-    });
-    
-    // Slideshow de fundo
-    function rotateFundos() {
-      const slides = document.querySelectorAll('.slide');
-      const atual = document.querySelector('.slide.active');
-      let proximo = atual.nextElementSibling;
-      
-      if (!proximo || !proximo.classList.contains('slide')) {
-        proximo = slides[0]; // Voltar ao primeiro slide
+    // Toggle para abrir/fechar trailers
+    function toggleVideo(videoId, tab) {
+      const videoContainer = document.getElementById(videoId);
+      const isActive = videoContainer.classList.contains('active');
+
+      // Fecha todos os vídeos e remove a classe 'active' de todas as tabs
+      document.querySelectorAll('.video-container').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+      // Se o vídeo clicado NÃO está ativo, ativa ele
+      if (!isActive) {
+        videoContainer.classList.add('active');
+        tab.classList.add('active');
       }
-      
-      atual.classList.remove('active');
-      proximo.classList.add('active');
     }
 
-    // Alterna slides a cada 8 segundos
-    const slideshowIntervalo = setInterval(rotateFundos, 5000);
-
-    // Controle de áudio
-    const music = document.getElementById('background-music');
-    const musicBtn = document.getElementById('music-toggle');
+    // Controle de Áudio
+    const musicPlayer = document.getElementById('background-music');
+    const musicButton = document.getElementById('music-toggle');
     const musicStatus = document.querySelector('.music-status');
-
-    musicBtn.addEventListener('click', () => {
-      if (music.paused) {
-        music.play();
+    musicButton.addEventListener('click', () => {
+      if (musicPlayer.paused) {
+        musicPlayer.play();
         musicStatus.textContent = 'Mute';
+        musicButton.classList.add('playing');
       } else {
-        music.pause();
+        musicPlayer.pause();
         musicStatus.textContent = 'Play';
+        musicButton.classList.remove('playing');
       }
-      musicBtn.classList.toggle('playing');
     });
+    musicPlayer.pause();
   </script>
 </body>
 </html>
