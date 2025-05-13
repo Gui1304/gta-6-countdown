@@ -5,17 +5,22 @@
   <title>Contagem Regressiva GTA 6</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: 'Segoe UI', sans-serif; }
-
-    body {
-      min-height: 100vh;
-      min-width: 100vw;
-      overflow-x: hidden;
-      position: relative;
-      background: #000;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 2vh; /* Conteúdo mais para cima */
+    }
     .background-slideshow {
       position: fixed;
       top: 0; left: 0;
@@ -44,36 +49,28 @@
       z-index: 1;
       pointer-events: none;
     }
-
     .container {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      position: relative;
       z-index: 2;
-      width: 100%;
       max-width: 800px;
+      width: 90vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 1rem;
     }
-
-    
     .logo-link {
-      display: block;
-      width: 340px;
+      width: 320px;
       max-width: 90vw;
-      margin-top: 220px;
-      margin-bottom: 2.5rem;
       cursor: pointer;
       user-select: none;
       animation: fadeInDown 1s cubic-bezier(.77,0,.18,1) both;
-      transition: transform 0.3s ease;
       border-radius: 8px;
+      transition: transform 0.3s ease;
     }
     .logo-link:hover {
       transform: translateY(-6px) scale(1.05);
-      box-shadow: none; 
+      box-shadow: none;
     }
     .logo-link img {
       width: 100%;
@@ -83,17 +80,12 @@
       user-select: none;
       border-radius: 8px;
     }
-
     .coming-text {
       font-family: 'Orbitron', 'Arial', sans-serif;
       font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: 0.26em;
       color: #fff;
-      padding: 0;
-      border-radius: 0;
-      display: inline-block;
-      margin-bottom: 2rem;
       text-shadow:
         0 0 6px #ff6fcf,
         0 0 12px #ff6fcf,
@@ -102,19 +94,14 @@
       text-align: center;
       user-select: none;
     }
-
     .countdown {
       display: flex;
       gap: 1rem;
       justify-content: center;
       align-items: center;
-      margin-bottom: 2rem;
       animation: fadeInUp 1s 0.4s cubic-bezier(.77,0,.18,1) both;
     }
-    .box,
-    .tab,
-    .retro-button,
-    .notify-button {
+    .box {
       background: rgba(16,16,16,0.6);
       border: 2px solid #f47eb7;
       border-radius: 10px;
@@ -123,18 +110,13 @@
         0 0 2px #000;
       transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
       user-select: none;
-    }
-    .box {
       padding: 1rem 1.5rem;
       min-width: 80px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .box:hover,
-    .tab:hover,
-    .retro-button:hover,
-    .notify-button:hover {
+    .box:hover {
       background: rgba(26,10,21,0.8);
       box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
       transform: translateY(-3px) scale(1.03);
@@ -151,31 +133,30 @@
       color: #f47eb7;
       text-shadow: 0 0 4px #000;
     }
-
     .logos {
-      margin-bottom: 2rem;
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
       justify-content: center;
       align-items: center;
       animation: fadeInUp 1s 0.6s cubic-bezier(.77,0,.18,1) both;
     }
     .logos img {
-      width: 60px;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
       cursor: pointer;
       transition: transform 0.2s, opacity 0.2s;
+      display: block;
     }
     .logos img:hover {
       opacity: 0.8;
       transform: scale(1.1);
     }
-
     .trailers {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 2rem;
-      margin-bottom: 2rem;
       animation: fadeInUp 1s 0.8s cubic-bezier(.77,0,.18,1) both;
     }
     .tab {
@@ -208,7 +189,6 @@
     .tab.active .arrow {
       transform: rotate(180deg);
     }
-
     .video-container {
       margin-top: 1rem;
       width: 100%;
@@ -227,7 +207,38 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-
+    .notify-button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(16,16,16,0.6);
+      border: 2px solid #f47eb7;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #f47eb7, 0 0 2px #000;
+      cursor: pointer;
+      gap: 0.5em;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      user-select: none;
+      animation: fadeInUp 1s 1.1s cubic-bezier(.77,0,.18,1) both;
+      max-width: 280px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .notify-button:hover {
+      background: rgba(26,10,21,0.8);
+      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
+      transform: translateY(-3px) scale(1.03);
+    }
+    .notify-icon {
+      font-size: 1.2em;
+      color: #ffb3ff;
+      display: flex;
+      align-items: center;
+    }
     .audio-control {
       position: fixed;
       bottom: 20px;
@@ -265,37 +276,6 @@
       background: #260e22;
       color: #f47eb7;
     }
-
-    .notify-button {
-      margin: 1.5rem 0 0 0;
-      padding: 0.8rem 1.6rem;
-      display: flex;
-      align-items: center;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #fff;
-      background: rgba(16,16,16,0.6);
-      border: 2px solid #f47eb7;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #f47eb7, 0 0 2px #000;
-      cursor: pointer;
-      gap: 0.7em;
-      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
-      user-select: none;
-      animation: fadeInUp 1s 1.1s cubic-bezier(.77,0,.18,1) both;
-    }
-    .notify-button:hover {
-      background: rgba(26,10,21,0.8);
-      box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
-      transform: translateY(-3px) scale(1.03);
-    }
-    .notify-icon {
-      font-size: 1.4em;
-      color: #ffb3ff;
-      display: flex;
-      align-items: center;
-    }
-
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-40px);}
       to   { opacity: 1; transform: none;}
@@ -304,17 +284,16 @@
       from { opacity: 0; transform: translateY(40px);}
       to   { opacity: 1; transform: none;}
     }
-
     @media (max-width: 480px) {
-      .logo-link { width: 90vw; margin-top: 160px; margin-bottom: 2rem; }
-      .coming-text { font-size: 1.2rem; margin-bottom: 1.5rem; }
+      .logo-link { width: 90vw; }
+      .coming-text { font-size: 1.2rem; }
       .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
       .label { font-size: 0.8rem; }
-      .logos img { width: 50px; }
+      .logos { gap: 1rem; }
+      .logos img { width: 38px; height: 38px; }
       .trailers { flex-direction: column; gap: 1rem; }
-      .tab { justify-content: center; }
-      .video-container iframe { height: 250px; }
+      .video-container iframe { height: 220px; }
       .audio-control { bottom: 10px; right: 10px; }
       .retro-button, .notify-button { padding: 8px 12px; font-size: 0.9rem; }
     }
@@ -331,22 +310,18 @@
       <div class="slide" style="background-image: url('gta6-6.png')"></div>
     </div>
   </div>
-
   <div class="overlay"></div>
   <div class="container">
     <a href="https://www.rockstargames.com/VI" target="_blank" class="logo-link" aria-label="Site oficial GTA 6" title="Site oficial GTA 6">
       <img src="sua-logo-gta6.png" alt="Logo GTA 6" />
     </a>
-
     <div class="coming-text">CHEGA EM</div>
-
     <div class="countdown fade-in">
       <div class="box"><div class="number" id="dias">0</div><div class="label">Dias</div></div>
       <div class="box"><div class="number" id="horas">00</div><div class="label">Horas</div></div>
       <div class="box"><div class="number" id="minutos">00</div><div class="label">Min</div></div>
       <div class="box"><div class="number" id="segundos">00</div><div class="label">Seg</div></div>
     </div>
-
     <div class="logos fade-in">
       <a href="https://store.playstation.com/en-us/concept/10000730" target="_blank">
         <img src="ps-logo.png" alt="PlayStation" />
@@ -355,7 +330,6 @@
         <img src="xbox-logo.png" alt="Xbox" />
       </a>
     </div>
-
     <div class="trailers fade-in">
       <div class="tab" data-video="video1" onclick="toggleVideo('video1', this)">
         Veja o 1º trailer <div class="arrow">▼</div>
@@ -364,20 +338,17 @@
         Veja o 2º trailer <div class="arrow">▼</div>
       </div>
     </div>
-
+    <button class="notify-button" id="notify-btn" onclick="subscribeNotification()">
+      <span class="notify-icon">🔔</span>
+      ativar notificação
+    </button>
     <div id="video1" class="video-container">
       <iframe src="https://www.youtube.com/embed/QdBZY2fkU-0?rel=0" allowfullscreen></iframe>
     </div>
     <div id="video2" class="video-container">
       <iframe src="https://www.youtube.com/embed/VQRLujxTm3c?rel=0" allowfullscreen></iframe>
     </div>
-
-    <button class="notify-button" id="notify-btn" onclick="subscribeNotification()">
-      <span class="notify-icon">🔔</span>
-      Ativar notificação de lançamento
-    </button>
   </div>
-
   <div class="audio-control">
     <audio id="background-music" src="Hot Together.mp3" loop></audio>
     <button id="music-toggle" class="retro-button">
@@ -385,7 +356,6 @@
       <span class="music-status">Play</span>
     </button>
   </div>
-
   <script>
     const track = document.querySelector('.slideshow-track');
     const slides = Array.from(document.querySelectorAll('.slide'));
@@ -393,10 +363,8 @@
     let currentSlide = 0;
     let isTransitioning = false;
     let interval;
-
     const firstClone = slides[0].cloneNode(true);
     track.appendChild(firstClone);
-
     function goToSlide(index, animate = true) {
       if (animate) {
         track.style.transition = "transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)";
@@ -405,13 +373,11 @@
       }
       track.style.transform = `translateX(${-index * 100}vw)`;
     }
-
     function nextSlide() {
       if (isTransitioning) return;
       isTransitioning = true;
       currentSlide++;
       goToSlide(currentSlide, true);
-
       if (currentSlide === slideCount) {
         setTimeout(() => {
           track.style.transition = "none";
@@ -426,23 +392,19 @@
         }, 1200);
       }
     }
-
     function startSlideshow() {
       interval = setInterval(nextSlide, 8000);
     }
     function stopSlideshow() {
       clearInterval(interval);
     }
-
     goToSlide(0, false);
     setTimeout(() => {
       nextSlide();
       startSlideshow();
     }, 8000);
-
     track.addEventListener('mouseenter', stopSlideshow);
     track.addEventListener('mouseleave', startSlideshow);
-
     const dataLancamento = new Date('2026-05-26T00:00:00');
     function atualizarContagem() {
       const agora = new Date();
@@ -466,7 +428,6 @@
     }
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
-
     function toggleVideo(videoId, tab) {
       const videoContainer = document.getElementById(videoId);
       const isActive = videoContainer.classList.contains('active');
@@ -475,13 +436,21 @@
       if (!isActive) {
         videoContainer.classList.add('active');
         tab.classList.add('active');
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+      } else {
+        videoContainer.classList.remove('active');
+        tab.classList.remove('active');
+        const anyActive = Array.from(document.querySelectorAll('.video-container')).some(v => v.classList.contains('active'));
+        if (!anyActive) {
+          document.documentElement.style.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
+        }
       }
     }
-
     const musicPlayer = document.getElementById('background-music');
     const musicButton = document.getElementById('music-toggle');
     const musicStatus = document.querySelector('.music-status');
-
     function tryAutoplayMusic() {
       musicPlayer.volume = 0.6;
       musicPlayer.play().then(() => {
@@ -493,7 +462,6 @@
       });
     }
     window.addEventListener('DOMContentLoaded', tryAutoplayMusic);
-
     musicButton.addEventListener('click', () => {
       if (musicPlayer.paused) {
         musicPlayer.play();
@@ -505,7 +473,6 @@
         musicButton.classList.remove('playing');
       }
     });
-
     function subscribeNotification() {
       if (!("Notification" in window)) {
         alert("Seu navegador não suporta notificações.");
