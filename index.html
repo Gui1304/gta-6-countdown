@@ -10,8 +10,7 @@
 
     /* FUNDO E OVERLAY */
     body {
-      background: #000 url('gta 6.png') no-repeat center center fixed;
-      background-size: cover;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -20,6 +19,29 @@
       text-align: center;
       position: relative;
     }
+    
+    /* SLIDESHOW DE FUNDO */
+    .background-slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      z-index: 0;
+    }
+    .slide.active {
+      opacity: 1;
+    }
+    
     .overlay {
       position: absolute;
       top: 0; left: 0;
@@ -146,6 +168,53 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
+    /* CONTROLE DE ÁUDIO RETRÔ */
+    .audio-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+    .retro-button {
+      font-weight: 600;
+      padding: 12px 20px;
+      outline: none;
+      border: 1px solid #db9bb1;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+      color: #db9bb1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .retro-button:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      top: 5px;
+      left: 5px;
+      height: 100%;
+      background-color: rgba(219, 155, 177, 0.3);
+      z-index: -1;
+      transition: all 0.35s;
+      border-radius: inherit;
+    }
+    .retro-button:hover:after {
+      top: 0px;
+      left: 0px;
+    }
+    .icon-music {
+      font-size: 1.2rem;
+      display: inline-block;
+    }
+    .retro-button.playing {
+      box-shadow: 0 0 10px rgba(219, 155, 177, 0.7);
+    }
+
     /* ANIMAÇÕES */
     .fade-in {
       opacity: 0;
@@ -193,10 +262,17 @@
       .trailers { flex-direction: column; }
       .tab { justify-content: center; }
       .video-container iframe { height: 250px; }
+      .audio-control { bottom: 10px; right: 10px; }
+      .retro-button { padding: 8px 12px; }
     }
   </style>
 </head>
 <body>
+  <div class="background-slideshow">
+    <div class="slide active" style="background-image: url('gta 6.png');"></div>
+    <div class="slide" style="background-image: url('gta6-2.png');"></div>
+    <div class="slide" style="background-image: url('gta6-3.png');"></div>
+  </div>
   <div class="overlay"></div>
   <div class="container">
     <h1 class="fade-in">GTA 6 chega em:</h1>
@@ -231,6 +307,14 @@
     <div id="video2" class="video-container">
       <iframe src="https://www.youtube.com/embed/VQRLujxTm3c?rel=0" allowfullscreen></iframe>
     </div>
+  </div>
+
+  <div class="audio-control">
+    <audio id="background-music" src="Hot Together.mp3" loop></audio>
+    <button id="music-toggle" class="retro-button">
+      <span class="icon-music">♫</span>
+      <span class="music-status">Play</span>
+    </button>
   </div>
 
   <script>
@@ -272,6 +356,39 @@
           tab.classList.add('active');
         }
       });
+    });
+    
+    // Slideshow de fundo
+    function rotateFundos() {
+      const slides = document.querySelectorAll('.slide');
+      const atual = document.querySelector('.slide.active');
+      let proximo = atual.nextElementSibling;
+      
+      if (!proximo || !proximo.classList.contains('slide')) {
+        proximo = slides[0]; // Voltar ao primeiro slide
+      }
+      
+      atual.classList.remove('active');
+      proximo.classList.add('active');
+    }
+
+    // Alterna slides a cada 8 segundos
+    const slideshowIntervalo = setInterval(rotateFundos, 5000);
+
+    // Controle de áudio
+    const music = document.getElementById('background-music');
+    const musicBtn = document.getElementById('music-toggle');
+    const musicStatus = document.querySelector('.music-status');
+
+    musicBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        musicStatus.textContent = 'Mute';
+      } else {
+        music.pause();
+        musicStatus.textContent = 'Play';
+      }
+      musicBtn.classList.toggle('playing');
     });
   </script>
 </body>
