@@ -58,14 +58,30 @@
       justify-content: center;
     }
 
-    /* Logo oficial com margem-top maior para alinhar com a linha da sua imagem */
-    .logo-oficial {
+    /* Logo GTA 6 clicável com animação de entrada e hover que aumenta suavemente, sem contorno rosa neon */
+    .logo-link {
+      display: block;
       width: 340px;
       max-width: 90vw;
-      margin-top: 220px; /* ajuste conforme necessário para alinhar com a linha vermelha */
+      margin-top: 220px; /* ajuste para alinhar com a área delimitada */
       margin-bottom: 2.5rem;
+      cursor: pointer;
+      user-select: none;
       animation: fadeInDown 1s cubic-bezier(.77,0,.18,1) both;
+      transition: transform 0.3s ease;
+      border-radius: 8px;
+    }
+    .logo-link:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: none; /* sem contorno rosa neon */
+    }
+    .logo-link img {
+      width: 100%;
+      height: auto;
       display: block;
+      pointer-events: none;
+      user-select: none;
+      border-radius: 8px;
     }
 
     .coming-text {
@@ -290,7 +306,7 @@
     }
 
     @media (max-width: 480px) {
-      .logo-oficial { width: 90vw; margin-top: 80px; margin-bottom: 2rem; }
+      .logo-link { width: 90vw; margin-top: 160px; margin-bottom: 2rem; }
       .coming-text { font-size: 1.2rem; margin-bottom: 1.5rem; }
       .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
@@ -318,7 +334,11 @@
 
   <div class="overlay"></div>
   <div class="container">
-    <img src="sua-logo-gta6.png" alt="Logo GTA 6" class="logo-oficial" />
+    <!-- Logo GTA 6 clicável com animação hover (aumenta suavemente, sem contorno) e animação de entrada -->
+    <a href="https://www.rockstargames.com/VI" target="_blank" class="logo-link" aria-label="Site oficial GTA 6" title="Site oficial GTA 6">
+      <img src="sua-logo-gta6.png" alt="Logo GTA 6" />
+    </a>
+
     <div class="coming-text">CHEGA EM</div>
 
     <div class="countdown fade-in">
@@ -409,7 +429,7 @@
     }
 
     function startSlideshow() {
-      interval = setInterval(nextSlide, 8000); // 8 segundos entre imagens
+      interval = setInterval(nextSlide, 8000);
     }
     function stopSlideshow() {
       clearInterval(interval);
@@ -419,7 +439,7 @@
     setTimeout(() => {
       nextSlide();
       startSlideshow();
-    }, 8000); // espera 8 segundos antes da primeira transição
+    }, 8000);
 
     track.addEventListener('mouseenter', stopSlideshow);
     track.addEventListener('mouseleave', startSlideshow);
