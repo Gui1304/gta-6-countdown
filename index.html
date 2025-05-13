@@ -15,7 +15,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; /* centraliza verticalmente */
+      justify-content: center;
       color: #fff;
       text-align: center;
       position: relative;
@@ -50,7 +50,7 @@
       gap: 1rem;
       justify-content: center;
       flex-wrap: nowrap;
-      margin-bottom: 2rem; /* espaçamento abaixo */
+      margin-bottom: 2rem;
     }
 
     /* BLOCOS ROSA-NEON SUAVE */
@@ -60,7 +60,7 @@
       border-radius: 8px;
       padding: 1rem 1.5rem;
       min-width: 80px;
-      transition: transform .2s, background .2s;
+      transition: transform 0.2s, background 0.2s;
     }
     .box:hover {
       transform: translateY(-4px);
@@ -72,14 +72,14 @@
       color: #f0f0f0;
     }
     .label {
-      margin-top: .3rem;
-      font-size: .9rem;
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
       color: #ccc;
     }
 
     /* LOGOS */
     .logos {
-      margin-bottom: 2rem; /* espaçamento antes dos trailers */
+      margin-bottom: 2rem;
       display: flex;
       gap: 2rem;
       justify-content: center;
@@ -87,14 +87,14 @@
     .logos img {
       width: 60px;
       cursor: pointer;
-      transition: transform .2s, opacity .2s;
+      transition: transform 0.2s, opacity 0.2s;
     }
     .logos img:hover {
-      opacity: .8;
+      opacity: 0.8;
       transform: scale(1.1);
     }
 
-    /* TRAILERS - NA PARTE INFERIOR */
+    /* TRAILERS */
     .trailers {
       display: flex;
       justify-content: center;
@@ -108,7 +108,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      transition: background .3s, transform .3s;
+      transition: background 0.3s, transform 0.3s;
     }
     .tab:hover {
       background: rgba(219,155,177,0.5);
@@ -122,7 +122,7 @@
     .arrow {
       display: inline-block;
       margin-left: 0.5rem;
-      transition: transform .3s;
+      transition: transform 0.3s;
     }
     .tab.active .arrow {
       transform: rotate(180deg);
@@ -146,12 +146,49 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
+    /* ANIMAÇÕES */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .slide-in {
+      transform: translateY(20px);
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+    }
+    @keyframes slideIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* DELAYS PARA SEQUÊNCIA MAIS RÁPIDA */
+    .container > h1 {
+      animation-delay: 0.1s;
+    }
+    .container > .countdown {
+      animation-delay: 0.3s;
+    }
+    .container > .logos {
+      animation-delay: 0.5s;
+    }
+    .container > .trailers {
+      animation-delay: 0.7s;
+    }
+
     /* RESPONSIVO */
     @media (max-width: 480px) {
       h1 { font-size: 2rem; }
-      .box { padding: .8rem 1rem; min-width: 60px; }
+      .box { padding: 0.8rem 1rem; min-width: 60px; }
       .number { font-size: 2rem; }
-      .label { font-size: .8rem; }
+      .label { font-size: 0.8rem; }
       .logos img { width: 50px; }
       .trailers { flex-direction: column; }
       .tab { justify-content: center; }
@@ -162,15 +199,15 @@
 <body>
   <div class="overlay"></div>
   <div class="container">
-    <h1>GTA 6 chega em:</h1>
-    <div class="countdown">
+    <h1 class="fade-in">GTA 6 chega em:</h1>
+    <div class="countdown fade-in">
       <div class="box"><div class="number" id="dias">0</div><div class="label">Dias</div></div>
       <div class="box"><div class="number" id="horas">00</div><div class="label">Horas</div></div>
       <div class="box"><div class="number" id="minutos">00</div><div class="label">Min</div></div>
       <div class="box"><div class="number" id="segundos">00</div><div class="label">Seg</div></div>
     </div>
 
-    <div class="logos">
+    <div class="logos fade-in">
       <a href="https://store.playstation.com/en-us/concept/10000730" target="_blank">
         <img src="ps-logo.png" alt="PlayStation Store">
       </a>
@@ -179,12 +216,12 @@
       </a>
     </div>
 
-    <div class="trailers">
+    <div class="trailers fade-in">
       <div class="tab" data-video="video1">
-        Veja o 1º trailer <div class="arrow">&#9660;</div>
+        Veja o 1º trailer <div class="arrow">▼</div>
       </div>
       <div class="tab" data-video="video2">
-        Veja o 2º trailer <div class="arrow">&#9660;</div>
+        Veja o 2º trailer <div class="arrow">▼</div>
       </div>
     </div>
 
@@ -203,31 +240,35 @@
       const agora = new Date();
       const diff = dataLancamento - agora;
       if (diff <= 0) { clearInterval(timer); return; }
-      const dias  = Math.floor(diff / (1000*60*60*24));
+      const dias = Math.floor(diff / (1000*60*60*24));
       const horas = Math.floor((diff / (1000*60*60)) % 24);
-      const mins  = Math.floor((diff / (1000*60)) % 60);
-      const secs  = Math.floor((diff / 1000) % 60);
-      document.getElementById('dias').textContent    = dias;
-      document.getElementById('horas').textContent   = String(horas).padStart(2,'0');
+      const mins = Math.floor((diff / (1000*60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      document.getElementById('dias').textContent = dias;
+      document.getElementById('horas').textContent = String(horas).padStart(2,'0');
       document.getElementById('minutos').textContent = String(mins).padStart(2,'0');
-      document.getElementById('segundos').textContent= String(secs).padStart(2,'0');
+      document.getElementById('segundos').textContent = String(secs).padStart(2,'0');
     }
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
 
-    // Tabs de trailer com toggle
+    // Tabs de trailer com toggle e animação
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const vidId = tab.getAttribute('data-video');
         const container = document.getElementById(vidId);
         const isActive = container.classList.contains('active');
-        // fecha todas
-        document.querySelectorAll('.video-container').forEach(v => v.classList.remove('active'));
+        // Fecha todas
+        document.querySelectorAll('.video-container').forEach(v => {
+          v.classList.remove('active');
+          v.classList.remove('slide-in');
+        });
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        // toggle
+        // Toggle
         if (!isActive) {
           container.classList.add('active');
+          container.classList.add('slide-in');
           tab.classList.add('active');
         }
       });
