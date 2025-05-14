@@ -400,7 +400,7 @@
       startSlideshow();
     }, 8000);
 
-    // DATA DE LANÇAMENTO: 26/05/2026 01:00 (-03)
+ 
     const dataLancamento = new Date('2026-05-26T01:00:00-03:00');
 
     function atualizarContagem() {
@@ -419,7 +419,7 @@
         return;
       }
 
-      // Cálculo correto dos dias, horas, minutos e segundos
+     
       const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
       const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
