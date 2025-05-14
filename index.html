@@ -2,8 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Contagem Regressiva GTA 6</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+
+
+  <link rel="preload" href="gta 6.png" as="image">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -15,8 +22,25 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 2vh; 
+      padding-top: 2vh;
     }
+
+    /* Animações */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    
+    .fade-in {
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+    }
+
     .background-slideshow {
       position: fixed;
       top: 0; left: 0;
@@ -66,7 +90,6 @@
     }
     .logo-link:hover {
       transform: translateY(-6px) scale(1.05);
-      box-shadow: none;
     }
     .logo-link img {
       width: 100%;
@@ -229,12 +252,6 @@
       box-shadow: 0 0 18px #f47eb7, 0 0 2px #000;
       transform: translateY(-3px) scale(1.03);
     }
-    .notify-icon {
-      font-size: 1.2em;
-      color: #ffb3ff;
-      display: flex;
-      align-items: center;
-    }
     .audio-control {
       position: fixed;
       bottom: 20px;
@@ -272,14 +289,6 @@
       background: #260e22;
       color: #f47eb7;
     }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-40px);}
-      to   { opacity: 1; transform: none;}
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px);}
-      to   { opacity: 1; transform: none;}
-    }
     @media (max-width: 480px) {
       .logo-link { width: 90vw; }
       .coming-text { font-size: 1.2rem; }
@@ -308,25 +317,34 @@
   </div>
   <div class="overlay"></div>
   <div class="container">
-    <a href="https://www.rockstargames.com/VI" target="_blank" class="logo-link" aria-label="Site oficial GTA 6" title="Site oficial GTA 6">
+    <a href="https://www.rockstargames.com/VI"
+       target="_blank"
+       class="logo-link"
+       aria-label="Site oficial GTA 6"
+       title="Site oficial GTA 6">
       <img src="logo-gta6.png" alt="Logo GTA 6" />
     </a>
     <div class="coming-text">CHEGA EM</div>
-    <div class="countdown fade-in">
+    <div class="countdown">
       <div class="box"><div class="number" id="dias">0</div><div class="label">Dias</div></div>
       <div class="box"><div class="number" id="horas">00</div><div class="label">Horas</div></div>
       <div class="box"><div class="number" id="minutos">00</div><div class="label">Min</div></div>
       <div class="box"><div class="number" id="segundos">00</div><div class="label">Seg</div></div>
     </div>
-    <div class="logos fade-in">
-      <a href="https://store.playstation.com/en-us/concept/10000730" target="_blank">
-        <img src="ps-logo.png" alt="PlayStation" />
+    <div class="logos">
+     
+      <a href="https://store.playstation.com/en-us/concept/10000730"
+         target="_blank"
+         aria-label="Ir para a loja PlayStation">
+        <img src="ps-logo.png" alt="Logo PlayStation" />
       </a>
-      <a href="https://www.xbox.com/en-US" target="_blank">
-        <img src="xbox-logo.png" alt="Xbox" />
+      <a href="https://www.xbox.com/en-US"
+         target="_blank"
+         aria-label="Ir para a loja Xbox">
+        <img src="xbox-logo.png" alt="Logo Xbox" />
       </a>
     </div>
-    <div class="trailers fade-in">
+    <div class="trailers">
       <div class="tab" data-video="video1" onclick="toggleVideo('video1', this)">
         Veja o 1º trailer <div class="arrow">▼</div>
       </div>
@@ -347,26 +365,43 @@
   </div>
   <div class="audio-control">
     <audio id="background-music" src="Hot Together.mp3" loop></audio>
-    <button id="music-toggle" class="retro-button">
+    <button id="music-toggle" class="retro-button" aria-label="Controlar música">
       <span>♫</span>
       <span class="music-status">Play</span>
     </button>
   </div>
+
+  
   <script>
-    const track = document.querySelector('.slideshow-track');
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const slideCount = slides.length;
+  (function() {
+    'use strict';
+
+    
+    const track            = document.querySelector('.slideshow-track');
+    const slides           = Array.from(document.querySelectorAll('.slide'));
+    const slideCount       = slides.length;
+    const firstClone       = slides[0].cloneNode(true);
+    const diasEl           = document.getElementById('dias');
+    const horasEl          = document.getElementById('horas');
+    const minutosEl        = document.getElementById('minutos');
+    const segundosEl       = document.getElementById('segundos');
+    const comingTextEl     = document.querySelector('.coming-text');
+    const tabs             = document.querySelectorAll('.tab');
+    const videoContainers  = document.querySelectorAll('.video-container');
+    const musicPlayer      = document.getElementById('background-music');
+    const musicButton      = document.getElementById('music-toggle');
+    const musicStatus      = document.querySelector('.music-status');
+
     let currentSlide = 0;
     let isTransitioning = false;
     let interval;
-    const firstClone = slides[0].cloneNode(true);
+
+    
     track.appendChild(firstClone);
     function goToSlide(index, animate = true) {
-      if (animate) {
-        track.style.transition = "transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)";
-      } else {
-        track.style.transition = "none";
-      }
+      track.style.transition = animate
+        ? "transform 1.2s cubic-bezier(0.4,0,0.2,1)"
+        : "none";
       track.style.transform = `translateX(${-index * 100}vw)`;
     }
     function nextSlide() {
@@ -379,83 +414,64 @@
           track.style.transition = "none";
           currentSlide = 0;
           goToSlide(currentSlide, false);
-          void track.offsetWidth;
           isTransitioning = false;
         }, 1200);
       } else {
-        setTimeout(() => {
-          isTransitioning = false;
-        }, 1200);
+        setTimeout(() => { isTransitioning = false; }, 1200);
       }
     }
     function startSlideshow() {
       interval = setInterval(nextSlide, 8000);
     }
-    function stopSlideshow() {
-      clearInterval(interval);
-    }
     goToSlide(0, false);
-    setTimeout(() => {
-      nextSlide();
-      startSlideshow();
-    }, 8000);
+    setTimeout(() => { nextSlide(); startSlideshow(); }, 8000);
 
- 
+    
     const dataLancamento = new Date('2026-05-26T01:00:00-03:00');
-
     function atualizarContagem() {
       const agora = new Date();
       const diff = dataLancamento - agora;
-
       if (diff <= 0) {
         clearInterval(timer);
         document.querySelector('.countdown').innerHTML = '';
-        const comingText = document.querySelector('.coming-text');
-        comingText.textContent = "LANÇADO!";
-        comingText.style.fontSize = "2.5rem";
-        if (window.Notification && Notification.permission === "granted") {
+        comingTextEl.textContent = "LANÇADO!";
+        comingTextEl.style.fontSize = "2.5rem";
+        if (Notification.permission === "granted") {
           new Notification("GTA 6 já foi lançado!");
         }
         return;
       }
+      const dias   = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas  = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins   = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs   = Math.floor((diff % (1000 * 60)) / 1000);
 
-     
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById('dias').textContent = dias;
-      document.getElementById('horas').textContent = String(horas).padStart(2,'0');
-      document.getElementById('minutos').textContent = String(mins).padStart(2,'0');
-      document.getElementById('segundos').textContent = String(secs).padStart(2,'0');
+      diasEl.textContent     = dias;
+      horasEl.textContent    = String(horas).padStart(2,'0');
+      minutosEl.textContent  = String(mins).padStart(2,'0');
+      segundosEl.textContent = String(secs).padStart(2,'0');
     }
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
 
-    function toggleVideo(videoId, tab) {
-      const videoContainer = document.getElementById(videoId);
-      const isActive = videoContainer.classList.contains('active');
-      document.querySelectorAll('.video-container').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+ 
+    window.toggleVideo = function(videoId, tabEl) {
+      const target = document.getElementById(videoId);
+      const isActive = target.classList.contains('active');
+      videoContainers.forEach(v => v.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
       if (!isActive) {
-        videoContainer.classList.add('active');
-        tab.classList.add('active');
+        target.classList.add('active');
+        tabEl.classList.add('active');
         document.documentElement.style.overflow = 'auto';
         document.body.style.overflow = 'auto';
       } else {
-        videoContainer.classList.remove('active');
-        tab.classList.remove('active');
-        const anyActive = Array.from(document.querySelectorAll('.video-container')).some(v => v.classList.contains('active'));
-        if (!anyActive) {
-          document.documentElement.style.overflow = 'hidden';
-          document.body.style.overflow = 'hidden';
-        }
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
       }
-    }
-    const musicPlayer = document.getElementById('background-music');
-    const musicButton = document.getElementById('music-toggle');
-    const musicStatus = document.querySelector('.music-status');
+    };
+
+   
     function tryAutoplayMusic() {
       musicPlayer.volume = 0.6;
       musicPlayer.play().then(() => {
@@ -478,19 +494,22 @@
         musicButton.classList.remove('playing');
       }
     });
-    function subscribeNotification() {
+
+    window.subscribeNotification = function() {
       if (!("Notification" in window)) {
         alert("Seu navegador não suporta notificações.");
         return;
       }
-      Notification.requestPermission().then(function(permission) {
+      Notification.requestPermission().then(permission => {
         if (permission === "granted") {
           alert("Você receberá uma notificação quando GTA 6 for lançado!");
         } else {
           alert("Permissão de notificação negada.");
         }
       });
-    }
+    };
+
+  })();
   </script>
 </body>
 </html>
