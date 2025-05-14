@@ -5,11 +5,7 @@
   <title>Contagem Regressiva GTA 6</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
       width: 100%;
@@ -403,24 +399,32 @@
       nextSlide();
       startSlideshow();
     }, 8000);
-    track.addEventListener('mouseenter', stopSlideshow);
-    track.addEventListener('mouseleave', startSlideshow);
-    const dataLancamento = new Date('2026-05-26T00:00:00');
+
+    // DATA DE LANÇAMENTO: 26/05/2026 01:00 (-03)
+    const dataLancamento = new Date('2026-05-26T01:00:00-03:00');
+
     function atualizarContagem() {
       const agora = new Date();
       const diff = dataLancamento - agora;
+
       if (diff <= 0) {
         clearInterval(timer);
-        document.querySelector('.countdown').innerHTML = '<h2>LANÇADO!</h2>';
+        document.querySelector('.countdown').innerHTML = '';
+        const comingText = document.querySelector('.coming-text');
+        comingText.textContent = "LANÇADO!";
+        comingText.style.fontSize = "2.5rem";
         if (window.Notification && Notification.permission === "granted") {
           new Notification("GTA 6 já foi lançado!");
         }
         return;
       }
-      const dias = Math.floor(diff / (1000*60*60*24));
-      const horas = Math.floor((diff / (1000*60*60)) % 24);
-      const mins = Math.floor((diff / (1000*60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
+
+      // Cálculo correto dos dias, horas, minutos e segundos
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
       document.getElementById('dias').textContent = dias;
       document.getElementById('horas').textContent = String(horas).padStart(2,'0');
       document.getElementById('minutos').textContent = String(mins).padStart(2,'0');
@@ -428,6 +432,7 @@
     }
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
+
     function toggleVideo(videoId, tab) {
       const videoContainer = document.getElementById(videoId);
       const isActive = videoContainer.classList.contains('active');
