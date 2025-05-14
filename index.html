@@ -272,60 +272,26 @@
       background: #260e22;
       color: #f47eb7;
     }
-    #access-counter-btn {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      z-index: 99;
-      background: #260e22;
-      color: #fff;
-      border: 2px solid #f47eb7;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: 1rem;
-      font-family: 'Orbitron', monospace;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 12px #f47eb7, 0 0 2px #000;
-      display: none;
-      transition: background 0.2s, box-shadow 0.2s;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px);}
+      to   { opacity: 1; transform: none;}
     }
-    #access-counter-btn:hover {
-      background: #f47eb7;
-      color: #260e22;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px);}
+      to   { opacity: 1; transform: none;}
     }
-    #access-counter-modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0; top: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-    #access-counter-modal .modal-content {
-      background: #1a0a15;
-      border: 2px solid #f47eb7;
-      border-radius: 12px;
-      box-shadow: 0 0 24px #f47eb7;
-      color: #fff;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.2rem;
-      padding: 2rem 2.5rem;
-      text-align: center;
-      position: relative;
-      min-width: 280px;
-      white-space: pre-wrap;
-    }
-    #access-counter-modal .close-btn {
-      position: absolute;
-      top: 10px; right: 15px;
-      font-size: 1.2rem;
-      color: #f47eb7;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Orbitron', monospace;
+    @media (max-width: 480px) {
+      .logo-link { width: 90vw; }
+      .coming-text { font-size: 1.2rem; }
+      .box { padding: 0.8rem 1rem; min-width: 60px; }
+      .number { font-size: 2rem; }
+      .label { font-size: 0.8rem; }
+      .logos { gap: 1rem; }
+      .logos img { width: 38px; height: 38px; }
+      .trailers { flex-direction: column; gap: 1rem; }
+      .video-container iframe { height: 220px; }
+      .audio-control { bottom: 10px; right: 10px; }
+      .retro-button, .notify-button { padding: 8px 12px; font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -386,73 +352,7 @@
       <span class="music-status">Play</span>
     </button>
   </div>
-  <button id="access-counter-btn" style="display:none;">Ver acessos</button>
-  <div id="access-counter-modal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="document.getElementById('access-counter-modal').style.display='none'">×</button>
-      <div id="access-counter-content">Acessos: ...</div>
-    </div>
-  </div>
   <script>
-    (function(){
-      let devices = JSON.parse(localStorage.getItem('gta6_devices') || '[]');
-      let userAgent = navigator.userAgent;
-      let now = new Date();
-      let nowStr = now.toLocaleString();
-      function getDeviceId(ua) {
-        let hash = 0;
-        for (let i = 0; i < ua.length; i++) {
-          hash = ((hash << 5) - hash) + ua.charCodeAt(i);
-          hash |= 0;
-        }
-        return hash.toString();
-      }
-      let deviceId = getDeviceId(userAgent);
-      let deviceExists = devices.some(d => d.id === deviceId);
-      if (!deviceExists) {
-        devices.push({ id: deviceId, userAgent: userAgent, firstAccess: nowStr, lastAccess: nowStr });
-      } else {
-        devices = devices.map(d => d.id === deviceId ? { ...d, lastAccess: nowStr } : d);
-      }
-      localStorage.setItem('gta6_devices', JSON.stringify(devices));
-      let count = Number(localStorage.getItem('gta6_access_counter') || '0');
-      count++;
-      localStorage.setItem('gta6_access_counter', count);
-      localStorage.setItem('gta6_last_access_time', nowStr);
-      localStorage.setItem('gta6_last_user_agent', userAgent);
-      function showAccessCounter() {
-        let count = Number(localStorage.getItem('gta6_access_counter') || '0');
-        let lastTime = localStorage.getItem('gta6_last_access_time') || 'Desconhecido';
-        let lastUserAgent = localStorage.getItem('gta6_last_user_agent') || 'Desconhecido';
-        let devices = JSON.parse(localStorage.getItem('gta6_devices') || '[]');
-        let text = `Total de acessos (neste navegador): ${count}\n\n` +
-                   `Horário do último acesso: ${lastTime}\n\n` +
-                   `Dispositivo atual:\n${lastUserAgent}\n\n` +
-                   `Dispositivos únicos neste navegador: ${devices.length}`;
-        document.getElementById('access-counter-content').textContent = text;
-        document.getElementById('access-counter-modal').style.display = 'flex';
-      }
-      function askForAccess() {
-        const senha = "20072007";
-        const tentativa = prompt("Senha de acesso:");
-        if (tentativa === senha) {
-          document.getElementById('access-counter-btn').style.display = 'block';
-          alert("Aba de acessos liberada!");
-        } else if (tentativa !== null) {
-          alert("Senha incorreta!");
-        }
-      }
-      document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'a') {
-          e.preventDefault();
-          askForAccess();
-        }
-      });
-      document.getElementById('access-counter-btn').onclick = showAccessCounter;
-      document.getElementById('access-counter-modal').onclick = function(e) {
-        if (e.target === this) this.style.display = 'none';
-      };
-    })();
     const track = document.querySelector('.slideshow-track');
     const slides = Array.from(document.querySelectorAll('.slide'));
     const slideCount = slides.length;
@@ -499,10 +399,14 @@
       nextSlide();
       startSlideshow();
     }, 8000);
+
+    // DATA DE LANÇAMENTO: 26/05/2026 01:00 (-03)
     const dataLancamento = new Date('2026-05-26T01:00:00-03:00');
+
     function atualizarContagem() {
       const agora = new Date();
       const diff = dataLancamento - agora;
+
       if (diff <= 0) {
         clearInterval(timer);
         document.querySelector('.countdown').innerHTML = '';
@@ -514,10 +418,13 @@
         }
         return;
       }
+
+      // Cálculo correto dos dias, horas, minutos e segundos
       const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
       const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
       document.getElementById('dias').textContent = dias;
       document.getElementById('horas').textContent = String(horas).padStart(2,'0');
       document.getElementById('minutos').textContent = String(mins).padStart(2,'0');
@@ -525,6 +432,7 @@
     }
     const timer = setInterval(atualizarContagem, 1000);
     atualizarContagem();
+
     function toggleVideo(videoId, tab) {
       const videoContainer = document.getElementById(videoId);
       const isActive = videoContainer.classList.contains('active');
